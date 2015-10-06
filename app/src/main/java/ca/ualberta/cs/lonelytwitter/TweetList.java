@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by kalvin1 on 9/29/15.
  */
-public class TweetList {
+public class TweetList implements MyObservable, MyObserver{
     private Tweet mostRecentTweet;
     private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
 
@@ -17,6 +17,8 @@ public class TweetList {
         else {
             mostRecentTweet = tweet;
             tweets.add(tweet);
+            tweet.addObserver(this);
+            notifyAllObservers();
         }
     }
 
@@ -47,5 +49,21 @@ public class TweetList {
 
     public int getCount() {
         return tweets.size();
+    }
+
+    private volatile ArrayList<MyObserver> observers = new ArrayList<MyObserver>();
+
+    public void addObserver(MyObserver observer){
+        observers.add(observer);
+    }
+
+    private void notifyAllObservers(){
+        for (MyObserver observer : observers){
+            observer.myNotify(this);
+        }
+    }
+
+    public void myNotify(MyObservable observable){
+        notifyAllObservers();
     }
 }

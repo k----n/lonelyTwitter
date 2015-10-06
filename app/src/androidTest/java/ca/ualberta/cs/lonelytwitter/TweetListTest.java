@@ -11,10 +11,11 @@ import java.util.Arrays;
 /**
  * Created by kalvin1 on 9/29/15.
  */
-public class TweetListTest extends ActivityInstrumentationTestCase2 {
+public class TweetListTest extends ActivityInstrumentationTestCase2 implements MyObserver {
     public TweetListTest() {
         super(ca.ualberta.cs.lonelytwitter.LonelyTwitterActivity.class);
     }
+    private Boolean weWereNotified;
 
     public void testHoldsStuff(){
         TweetList list = new TweetList();
@@ -47,7 +48,7 @@ public class TweetListTest extends ActivityInstrumentationTestCase2 {
         list.addTweet(tweet2);
         ArrayList<Tweet> list2 = list.getTweets();
         assertEquals(list2.get(0),tweet1);
-        assertEquals(list2.get(1),tweet2);
+        assertEquals(list2.get(1), tweet2);
     }
 
     public void testCheckingThings(){
@@ -74,6 +75,29 @@ public class TweetListTest extends ActivityInstrumentationTestCase2 {
         assertEquals(list.getCount(), 1);
         list.addTweet(new NormalTweet("test1"));
         assertEquals(list.getCount(), 2);
+    }
+
+    public void myNotify(MyObservable observable) {
+         weWereNotified = Boolean.TRUE;
+    }
+
+    public void testObservable(){
+        TweetList list = new TweetList();
+        list.addObserver(this);
+        Tweet tweet = new NormalTweet("test");
+        weWereNotified = Boolean.FALSE;
+        list.addTweet(tweet);
+        assertTrue(weWereNotified);
+    }
+
+    public void testModifyTweetinList(){
+        TweetList list = new TweetList();
+        list.addObserver(this);
+        Tweet tweet = new NormalTweet("test");
+        list.addTweet(tweet);
+        weWereNotified = Boolean.FALSE;
+        tweet.setText("different text");
+        assertTrue(weWereNotified);
     }
 
 }
