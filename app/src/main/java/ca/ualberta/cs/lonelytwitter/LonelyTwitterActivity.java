@@ -57,40 +57,40 @@ public class LonelyTwitterActivity extends Activity {
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
-		super.onStart();
-		loadFromFile();
-		adapter = new ArrayAdapter<Tweet>(this, R.layout.list_item, tweets);
-		oldTweetsList.setAdapter(adapter);
+		super.onStart(); // view
+		loadFromFile(); // controller
+		adapter = new ArrayAdapter<Tweet>(this, R.layout.list_item, tweets); //model
+		oldTweetsList.setAdapter(adapter); // controller
 	}
 
 	private void loadFromFile() {
 		try {
-			FileInputStream fis = openFileInput(FILENAME);
-			BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-			Gson gson = new Gson();
+			FileInputStream fis = openFileInput(FILENAME); // model
+			BufferedReader in = new BufferedReader(new InputStreamReader(fis)); // model
+			Gson gson = new Gson(); // model
 			// Taken from https://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/com/google/gson/Gson.html 2015-09-22
-			Type listType = new TypeToken<ArrayList<NormalTweet>>() {}.getType();
-			tweets = gson.fromJson(in, listType);
+			Type listType = new TypeToken<ArrayList<NormalTweet>>() {}.getType(); // model
+			tweets = gson.fromJson(in, listType); // model
 		} catch (FileNotFoundException e) {
-			tweets = new ArrayList<Tweet>();
+			tweets = new ArrayList<Tweet>(); // model
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e); // view
 		}
 	}
 	
 	private void saveInFile() {
 		try {
 			FileOutputStream fos = openFileOutput(FILENAME,
-					0);
-			OutputStreamWriter writer = new OutputStreamWriter(fos);
-			Gson gson = new Gson();
-			gson.toJson(tweets, writer);
-			writer.flush();
-			fos.close();
+					0); // model
+			OutputStreamWriter writer = new OutputStreamWriter(fos); // model
+			Gson gson = new Gson(); // model
+			gson.toJson(tweets, writer); // model
+			writer.flush(); // model
+			fos.close(); // controller
 		} catch (FileNotFoundException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e); //view
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e); //view
 		}
 	}
 }
