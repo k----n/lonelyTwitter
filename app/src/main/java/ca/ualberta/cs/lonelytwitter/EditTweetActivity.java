@@ -27,7 +27,6 @@ public class EditTweetActivity extends Activity {
 
         bodyText.setText(editText);
 
-
         saveEditButton = (Button) findViewById(R.id.saveEditButton);
 
         saveEditButton.setOnClickListener(new View.OnClickListener() {
